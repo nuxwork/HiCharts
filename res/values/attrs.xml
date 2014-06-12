@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- view -->
+    <declare-styleable name="ShapeView">
+        <attr name="shapeColor" format="color|reference" />
+        <attr name="label" format="string|reference" />
+        <attr name="labelColor" format="color|reference" />
+        <attr name="labelSize" format="dimension|reference" />
+    </declare-styleable>
+    <declare-styleable name="Pie">
+        <attr name="startAngle" format="float" />
+        <attr name="sweepAngle" format="float" />
+    </declare-styleable>
+    
+    <!-- widget -->
+    <declare-styleable name="PieChart">
+        <attr name="gap" format="dimension" />
+    </declare-styleable>
+
+</resources>
