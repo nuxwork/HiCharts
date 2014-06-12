@@ -15,11 +15,10 @@ import com.hicharts.shape.Shape;
 import com.hicharts.util.TextUtil;
 
 public abstract class ShapeView<T extends Shape> extends View {
-
 	// TODO 默认值使用defStyleAttr来完成
 	public static final int	DEFAULT_SHAPE_COLOR	= 0xFF8d8d8d;
 	public static final int	DEFAULT_LABEL_COLOR	= 0xFFeeeeee;
-	public static final int	DEFAULT_LABEL_SIZE	= 20;
+	public static final int	DEFAULT_LABEL_SIZE	= 200;
 
 	private Paint			mPaint;
 	private ColorStateList	mShapeColorList;
@@ -70,9 +69,8 @@ public abstract class ShapeView<T extends Shape> extends View {
 			a.recycle();
 
 		}
-		
-		mPaint.setTextSize(mLabelSize);
-		TextUtil.getBounds(mLabel, mLabelBounds, mPaint);
+
+		labelSizeChanged();
 
 		onCreate(context, attrs, defStyleAttr);
 	}
@@ -112,7 +110,7 @@ public abstract class ShapeView<T extends Shape> extends View {
 	public void setLabel(String label) {
 		if (mLabel != label) {
 			mLabel = label;
-			TextUtil.getBounds(mLabel, mLabelBounds, mPaint);
+			labelSizeChanged();
 			invalidate();
 		}
 	}
@@ -146,10 +144,11 @@ public abstract class ShapeView<T extends Shape> extends View {
 	public void setLabelSize(float labelSize) {
 		if (mLabelSize != labelSize) {
 			mLabelSize = labelSize;
+			labelSizeChanged();
 			invalidate();
 		}
 	}
-
+	
 	public Rect getLabelBounds() {
 		return mLabelBounds;
 	}
@@ -157,16 +156,24 @@ public abstract class ShapeView<T extends Shape> extends View {
 	protected Paint getPaint() {
 		return mPaint;
 	}
+	
+	private void labelSizeChanged(){
+		mPaint.setTextSize(mLabelSize);
+		TextUtil.getBounds(mLabel, mLabelBounds, mPaint);
+	}
 
 	@Override
 	protected void drawableStateChanged() {
 		super.drawableStateChanged();
 		int[] stateSet = getDrawableState();
 
-		mShapeColor = mShapeColorList == null ? DEFAULT_SHAPE_COLOR : mShapeColorList
-				.getColorForState(stateSet, DEFAULT_SHAPE_COLOR);
-		mLabelColor = mLabelColorList == null ? DEFAULT_LABEL_COLOR : mLabelColorList
-				.getColorForState(stateSet, DEFAULT_LABEL_COLOR);
+		if (mShapeColorList != null) {
+			mShapeColor = mShapeColorList.getColorForState(stateSet, DEFAULT_SHAPE_COLOR);
+		}
+
+		if (mLabelColorList != null) {
+			mLabelColor = mLabelColorList.getColorForState(stateSet, DEFAULT_LABEL_COLOR);
+		}
 	}
 
 	@Override

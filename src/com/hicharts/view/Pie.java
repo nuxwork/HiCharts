@@ -112,8 +112,7 @@ public class Pie extends ShapeView<Sector> {
 		// draw label
 		String label = getLabel();
 		if (!TextUtils.isEmpty(label) && shape != null) {
-			paint.setColor(getLabelColorList().getColorForState(state,
-					DEFAULT_LABEL_COLOR));
+			paint.setColor(getLabelColor());
 			paint.setTextSize(getLabelSize());
 			TextUtil.draw(canvas, paint, shape.getCenter(), label.split("\\n"));
 		}

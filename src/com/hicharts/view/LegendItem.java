@@ -3,6 +3,7 @@ package com.hicharts.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -68,6 +69,7 @@ public class LegendItem extends ShapeView<Rectangle> {
 		Rect bounds = getLabelBounds();
 		int bw = bounds.width();
 		int bh = bounds.height();
+
 		if (widthMode != MeasureSpec.EXACTLY) {
 			width = (int) (bw + bh + bh);
 		}
@@ -83,14 +85,13 @@ public class LegendItem extends ShapeView<Rectangle> {
 	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 		Rect bounds = getLabelBounds();
 		int bh = bounds.height();
-		mRectangle.setArea(left, top, bh, bh);
+		mRectangle.setArea(0, 0, bh, bh);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
-		int[] state = getDrawableState();
 		Paint paint = getPaint();
 		paint.setColor(getShapeColor());
 		mRectangle.draw(canvas, paint);
@@ -100,13 +101,13 @@ public class LegendItem extends ShapeView<Rectangle> {
 		if (TextUtils.isEmpty(label) || getShape() == null)
 			return;
 
-		float size = getLabelSize();
 		Rect bounds = getLabelBounds();
-		float x = mRectangle.getWidth() + size + bounds.width() / 2f;
-		float y = bounds.height() / 2f;
+		int bh = bounds.height();
+		float x = bh + bh;
+		float y = bh / 2f;
 
-		paint.setColor(getLabelColorList().getColorForState(state, DEFAULT_LABEL_COLOR));
+		paint.setColor(getLabelColor());
 		paint.setTextSize(getLabelSize());
-		TextUtil.draw(canvas, paint, x, y, label.split("\\n"));
+		TextUtil.draw(canvas, paint, Align.LEFT, x, y, label.split("\\n"));
 	}
 }
