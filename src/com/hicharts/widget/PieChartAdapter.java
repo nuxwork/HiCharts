@@ -14,28 +14,26 @@ import com.hicharts.util.Math2;
 import com.hicharts.view.Pie;
 
 public class PieChartAdapter extends BaseAdapter {
-	private Context mContext;
-	private LayoutInflater mInflater;
+	private Context			mContext;
+	private LayoutInflater	mInflater;
 
-	private float[] mValues;
-	private String[] mLabels;
-	private int mLayoutId;
+	private float[]			mValues;
+	private String[]		mLabels;
+	private int				mLayoutId;
 
-	private double mTotal;
-	private float[] mStartAngles;
-	private float[] mSweepAngles;
+	private double			mTotal;
+	private float[]			mStartAngles;
+	private float[]			mSweepAngles;
 
-	private ViewBinder mViewBinder;
+	private ViewBinder		mViewBinder;
 
 	public PieChartAdapter(Context context, float[] values) {
 		this(context, values, null, View.NO_ID);
 	}
 
-	public PieChartAdapter(Context context, float[] values, String[] labels,
-			int layoutId) {
+	public PieChartAdapter(Context context, float[] values, String[] labels, int layoutId) {
 		mContext = context;
-		mInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mValues = values;
 		mLabels = labels;
 		mLayoutId = layoutId;
@@ -61,8 +59,8 @@ public class PieChartAdapter extends BaseAdapter {
 				mSweepAngles[i] = sweepAngle;
 				mStartAngles[i] = startAngle;
 				if (b) {
-					mLabels[i] = String.format(Locale.US, "%1$.0f%%",
-							ratio * 100);
+					mLabels[i] = (int)mValues[i] + " , "
+							+ String.format(Locale.US, "%1$.0f%%", ratio * 100);
 				}
 			}
 		}
@@ -117,7 +115,7 @@ public class PieChartAdapter extends BaseAdapter {
 			pie.setShapeColor(ColorSet.getColor(position));
 			pie.setStartAngle(mStartAngles[position]);
 			pie.setSweepAngle(mSweepAngles[position]);
-			pie.setLabel(mLabels[position] /*+ "\n" + mValues[position]*/);
+			pie.setLabel(mLabels[position] /* + "\n" + mValues[position] */);
 		} else {
 			// mViewBinder.setViewValue(v, data, textRepresentation);
 		}

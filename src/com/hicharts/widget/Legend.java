@@ -2,6 +2,7 @@ package com.hicharts.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 
@@ -23,11 +24,11 @@ public class Legend extends GridView {
 	}
 
 	private void create(Context context, AttributeSet attrs, int defStyleAttr) {
-
 		onCreate(context, attrs, defStyleAttr);
 	}
 
-	protected void onCreate(Context context, AttributeSet attrs, int defStyleAttr) {}
+	protected void onCreate(Context context, AttributeSet attrs, int defStyleAttr) {
+	}
 
 	@Override
 	public void setAdapter(ListAdapter adapter) {
@@ -38,5 +39,11 @@ public class Legend extends GridView {
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
 		super.onMeasure(widthMeasureSpec, expandSpec);
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+//		return super.onTouchEvent(ev);
+		return false;
 	}
 }

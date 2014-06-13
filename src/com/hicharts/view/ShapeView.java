@@ -2,11 +2,13 @@ package com.hicharts.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -14,16 +16,10 @@ import com.hicharts.R;
 import com.hicharts.shape.Shape;
 import com.hicharts.util.TextUtil;
 
-public abstract class ShapeView<T extends Shape> extends View {
-	// TODO 默认值使用defStyleAttr来完成
-	public static final int	DEFAULT_SHAPE_COLOR	= 0xFF8d8d8d;
-	public static final int	DEFAULT_LABEL_COLOR	= 0xFFeeeeee;
-	public static final int	DEFAULT_LABEL_SIZE	= 200;
-
+public abstract class ShapeView<T extends Shape> extends View implements IShapeView<T> {
 	private Paint			mPaint;
 	private ColorStateList	mShapeColorList;
 	private int				mShapeColor;
-
 	private String			mLabel;
 	private float			mLabelSize;
 	private Rect			mLabelBounds;
@@ -76,10 +72,6 @@ public abstract class ShapeView<T extends Shape> extends View {
 	}
 
 	protected void onCreate(Context context, AttributeSet attrs, int defStyleAttr) {}
-
-	public abstract T getShape();
-
-	public abstract void setShape(T shape);
 
 	public ColorStateList getShapeColorList() {
 		return mShapeColorList;
@@ -142,24 +134,37 @@ public abstract class ShapeView<T extends Shape> extends View {
 	}
 
 	public void setLabelSize(float labelSize) {
-		if (mLabelSize != labelSize) {
-			mLabelSize = labelSize;
+		setLabelSize(TypedValue.COMPLEX_UNIT_SP, labelSize);
+	}
+
+	public void setLabelSize(int unit, float labelSize) {
+		Context c = getContext();
+		Resources r;
+
+		if (c == null)
+			r = Resources.getSystem();
+		else
+			r = c.getResources();
+
+		float size = TypedValue.applyDimension(unit, labelSize, r.getDisplayMetrics());
+		if (mLabelSize != size) {
+			mLabelSize = size;
 			labelSizeChanged();
 			invalidate();
 		}
 	}
-	
+
+	private void labelSizeChanged() {
+		mPaint.setTextSize(mLabelSize);
+		TextUtil.getBounds(mLabel, mLabelBounds, mPaint);
+	}
+
 	public Rect getLabelBounds() {
 		return mLabelBounds;
 	}
 
-	protected Paint getPaint() {
+	public Paint getPaint() {
 		return mPaint;
-	}
-	
-	private void labelSizeChanged(){
-		mPaint.setTextSize(mLabelSize);
-		TextUtil.getBounds(mLabel, mLabelBounds, mPaint);
 	}
 
 	@Override
