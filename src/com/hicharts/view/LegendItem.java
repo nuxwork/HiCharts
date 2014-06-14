@@ -84,13 +84,13 @@ public class LegendItem extends LinearLayout implements IShapeView<Rectangle> {
 		addView(mLabel, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 	}
 
-	@Override
+	/*@Override
 	public void setShape(Rectangle shape) {
 		if (mRectangle != shape) {
 			mRectangle = shape;
 			invalidate();
 		}
-	}
+	}*/
 
 	@Override
 	public Rectangle getShape() {

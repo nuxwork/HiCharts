@@ -48,9 +48,9 @@ public class Pie extends ShapeView<Sector> {
 			mSweepAngle = Math2.PERIGON;
 		}
 
-		Sector sector = getShape();
-		sector.setSweepAngle(mSweepAngle);
-		sector.setStartAngle(mStartAngle);
+		mSector = getShape();
+		mSector.setSweepAngle(mSweepAngle);
+		mSector.setStartAngle(mStartAngle);
 	}
 
 	public Sector getShape() {
@@ -60,13 +60,13 @@ public class Pie extends ShapeView<Sector> {
 		return mSector;
 	}
 
-	@Override
+	/*@Override
 	public void setShape(Sector shape) {
 		if (mSector != shape && !mSector.equals(shape)) {
 			mSector = shape;
 			invalidate();
 		}
-	}
+	}*/
 
 	public float getStartAngle() {
 		return mStartAngle;
@@ -102,7 +102,6 @@ public class Pie extends ShapeView<Sector> {
 
 		Sector shape = getShape();
 		Paint paint = getPaint();
-		int[] state = getDrawableState();
 
 		if (shape != null) {
 			paint.setColor(getShapeColor());

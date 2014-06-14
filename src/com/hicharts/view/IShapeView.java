@@ -12,7 +12,7 @@ public interface IShapeView<T extends Shape> {
 	public static final int	DEFAULT_LABEL_COLOR	= 0xFFeeeeee;
 	public static final int	DEFAULT_LABEL_SIZE	= 20;
 
-	void setShape(T shape);
+//	void setShape(T shape);
 
 	T getShape();
 

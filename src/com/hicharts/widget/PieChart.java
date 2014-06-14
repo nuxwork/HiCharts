@@ -1,6 +1,7 @@
 package com.hicharts.widget;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -96,6 +97,7 @@ public class PieChart extends AdapterView<PieChartAdapter> {
 		super.onDetachedFromWindow();
 	}
 
+	// TODO
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -138,5 +140,10 @@ public class PieChart extends AdapterView<PieChartAdapter> {
 						- getPaddingBottom());
 			}
 		}
+	}
+
+	@Override
+	protected void dispatchDraw(Canvas canvas) {
+		super.dispatchDraw(canvas);
 	}
 }

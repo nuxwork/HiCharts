@@ -12,6 +12,7 @@ import com.hicharts.R;
 import com.hicharts.feature.ColorSet;
 import com.hicharts.util.Math2;
 import com.hicharts.view.Pie;
+import com.hicharts.view.Pie3D;
 
 public class PieChartAdapter extends BaseAdapter {
 	private Context			mContext;
@@ -24,6 +25,8 @@ public class PieChartAdapter extends BaseAdapter {
 	private double			mTotal;
 	private float[]			mStartAngles;
 	private float[]			mSweepAngles;
+
+	private boolean			mIs3D;
 
 	private ViewBinder		mViewBinder;
 
@@ -50,20 +53,47 @@ public class PieChartAdapter extends BaseAdapter {
 				mTotal += values[i];
 			}
 
-			float startAngle = 0f;
+			float startAngle = -90f;
 			float sweepAngle = 0f;
 			double ratio = 0f;
-			for (int i = 0; i != values.length; i++, startAngle += sweepAngle) {
-				ratio = values[i] / mTotal;
+
+			int index = 0;
+			for (; index != values.length; index++) {
+
+				ratio = values[index] / mTotal;
 				sweepAngle = (float) (ratio * Math2.PERIGON);
-				mSweepAngles[i] = sweepAngle;
-				mStartAngles[i] = startAngle;
+				if (startAngle + sweepAngle > 90f)
+					break;
+				mSweepAngles[index] = sweepAngle;
+				mStartAngles[index] = startAngle;
 				if (b) {
-					mLabels[i] = (int)mValues[i] + " , "
+					mLabels[index] = (int) mValues[index] + " , "
+							+ String.format(Locale.US, "%1$.0f%%", ratio * 100);
+				}
+				startAngle += sweepAngle;
+			}
+
+			startAngle = Math2.PERIGON - 90f;
+			for (; index != values.length; index++) {
+				ratio = values[index] / mTotal;
+				sweepAngle = (float) (ratio * Math2.PERIGON);
+				mSweepAngles[index] = sweepAngle;
+				startAngle -= sweepAngle;
+				mStartAngles[index] = startAngle;
+				if (b) {
+					mLabels[index] = (int) mValues[index] + " , "
 							+ String.format(Locale.US, "%1$.0f%%", ratio * 100);
 				}
 			}
 		}
+	}
+
+	public boolean is3D() {
+		return mIs3D;
+	}
+
+	public void set3D(boolean is3d) {
+		mIs3D = is3d;
 	}
 
 	public ViewBinder getViewBinder() {
@@ -98,7 +128,12 @@ public class PieChartAdapter extends BaseAdapter {
 			if (mLayoutId != View.NO_ID) {
 				v = mInflater.inflate(mLayoutId, null);
 			} else {
-				Pie pie = new Pie(mContext);
+				Pie pie = null;
+				if (mIs3D) {
+					pie = new Pie3D(mContext);
+				} else {
+					pie = new Pie(mContext);
+				}
 				pie.setId(R.id.pie);
 				v = pie;
 			}

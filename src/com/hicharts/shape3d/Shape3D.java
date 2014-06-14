@@ -1,6 +1,7 @@
 package com.hicharts.shape3d;
 
-import android.graphics.drawable.shapes.Shape;
+import com.hicharts.shape.Shape;
+
 
 public abstract class Shape3D extends Shape{
 	private float mDepth;
