@@ -7,10 +7,21 @@
         <attr name="label" format="string|reference" />
         <attr name="labelColor" format="color|reference" />
         <attr name="labelSize" format="dimension|reference" />
+        <attr name="ratioSize" format="float" />
+        <attr name="ratioTo">
+            <enum name="ratioToWidth" value="1" />
+            <enum name="ratioToHeight" value="2" />
+        </attr>
     </declare-styleable>
     <declare-styleable name="Pie">
         <attr name="startAngle" format="float" />
         <attr name="sweepAngle" format="float" />
+    </declare-styleable>
+    <declare-styleable name="HexagonView">
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
     </declare-styleable>
     <declare-styleable name="Pie3D">
         <attr name="depth" format="float" />

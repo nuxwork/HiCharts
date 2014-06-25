@@ -2,25 +2,36 @@ package com.hicharts.shape;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
 //TODO Cloneable
 public abstract class Shape implements Cloneable {
 
-	private RectF mArea;
+	private RectF	mArea;
+	private Path	mPath;
+	private boolean mRegular;
 
 	public Shape() {
 		mArea = new RectF();
 	}
 
+	public void setRegular(boolean regular) {
+		mRegular = regular;
+	}
+
+	public boolean isRegular() {
+		return mRegular;
+	}
+
 	public float getWidth() {
 
-		return mArea == null ? 0 : mArea.width();
+		return mArea.width();
 	}
 
 	public float getHeight() {
-		return mArea == null ? 0 : mArea.height();
+		return mArea.height();
 	}
 
 	public RectF getArea() {
@@ -28,12 +39,6 @@ public abstract class Shape implements Cloneable {
 	}
 
 	public void setArea(float left, float top, float right, float bottom) {
-		if (mArea == null) {
-			mArea = new RectF(left, top, right, bottom);
-			onAreaChanged(left, top, right, bottom);
-			return;
-		}
-
 		if (mArea.left == left && mArea.top == top && mArea.right == right
 				&& mArea.bottom == bottom) {
 			return;
@@ -45,9 +50,9 @@ public abstract class Shape implements Cloneable {
 		mArea.bottom = bottom;
 		onAreaChanged(left, top, right, bottom);
 	}
-	
-	protected void onAreaChanged(float left, float top, float right, float bottom){
-		
+
+	protected void onAreaChanged(float left, float top, float right, float bottom) {
+
 	}
 
 	public boolean contains(float x, float y) {
@@ -63,15 +68,27 @@ public abstract class Shape implements Cloneable {
 
 	/**
 	 * content center
+	 * 
 	 * @return
 	 */
 	public PointF getCenter() {
-		// TODO 优化
-		if (mArea == null)
-			return new PointF(0, 0);
-		else
-			return new PointF(mArea.centerX(), mArea.centerY());
+		return new PointF(mArea.centerX(), mArea.centerY());
 	}
 
 	public abstract void draw(Canvas canvas, Paint paint);
+
+	public Path toPath() {
+		if (mPath == null) {
+			mPath = new Path();
+		}
+
+		RectF area = getArea();
+		mPath.reset();
+		mPath.moveTo(area.left, area.top);
+		mPath.lineTo(area.left, area.bottom);
+		mPath.lineTo(area.right, area.bottom);
+		mPath.lineTo(area.right, area.top);
+		mPath.close();
+		return mPath;
+	}
 }

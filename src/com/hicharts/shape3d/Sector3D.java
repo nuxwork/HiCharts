@@ -3,6 +3,7 @@ package com.hicharts.shape3d;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.Log;
 
@@ -10,13 +11,20 @@ import com.hicharts.feature.Color2;
 import com.hicharts.shape.Sector;
 
 public class Sector3D extends Sector implements IShape3D {
-	private float	mDepth;
-	private RectF	mAbove;
-	private RectF	mBelow;
+	private static final String	TAG	= "HiCharts.Sector3D";
+
+	private float				mDepth;
+	private RectF				mAbove;
+	private RectF				mBelow;
 
 	public Sector3D() {
 		mAbove = new RectF();
 		mBelow = new RectF();
+	}
+	
+	@Override
+	public boolean isRegular() {
+		return false;
 	}
 
 	@Override
@@ -30,13 +38,23 @@ public class Sector3D extends Sector implements IShape3D {
 	}
 
 	@Override
+	public PointF getCenter() {
+		RectF area = mAbove;
+		if (area == null)
+			return new PointF(0, 0);
+
+		float angle = (float) (Math.toRadians(getStartAngle() + getSweepAngle() / 2));
+		float x = (float) (Math.cos(angle) * area.width() / 3) + area.centerX();
+		float y = (float) (Math.sin(angle) * area.height() / 3) + area.centerY();
+		return new PointF(x, y);
+	}
+
+	@Override
 	public void setArea(float left, float top, float right, float bottom) {
 		super.setArea(left, top, right, bottom);
 		mAbove.set(left, top, right, bottom - mDepth);
 		mBelow.set(left, top + mDepth, right, bottom);
 	}
-
-	private static final String	TAG	= "HiCharts.Sector3D";
 
 	@Override
 	public void draw(Canvas canvas, Paint paint) {

@@ -102,11 +102,11 @@ public class Pie extends ShapeView<Sector> {
 
 		Sector shape = getShape();
 		Paint paint = getPaint();
-
-		if (shape != null) {
-			paint.setColor(getShapeColor());
-			shape.draw(canvas, paint);
-		}
+//
+//		if (shape != null) {
+//			paint.setColor(getShapeColor());
+//			shape.draw(canvas, paint);
+//		}
 
 		// draw label
 		String label = getLabel();

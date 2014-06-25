@@ -11,7 +11,7 @@ import android.graphics.RectF;
  * @author swordy
  * 
  */
-public class Sector extends Shape {
+public class Sector extends Square {
 	/** the sweep angle of sector */
 	private float mSweepAngle;
 
